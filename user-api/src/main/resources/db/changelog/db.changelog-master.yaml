@@ -1,0 +1,120 @@
+databaseChangeLog:
+  - logicalFilePath: db/changelog/db.init.yml
+
+  - changeSet:
+      id: 1
+      author: bogoslov
+      comment: "add roles table"
+      changes:
+        - createTable:
+            tableName: roles
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: varchar(50)
+                  constraints:
+                    unique: true
+                    nullable: false
+
+  - changeSet:
+      id: 2
+      author: bogoslov
+      comment: "add users table"
+      changes:
+        - createTable:
+            tableName: users
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: login
+                  type: varchar(50)
+                  constraints:
+                    unique: true
+                    nullable: false
+              - column:
+                  name: password
+                  type: varchar(512)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: first_name
+                  type: varchar(50)
+              - column:
+                  name: last_name
+                  type: varchar(50)
+              - column:
+                  name: user_role_id
+                  type: bigint
+                  constraints:
+                    foreignKeyName: user_role_fk
+                    referencedTableName: roles
+                    referencedColumnNames: id
+
+  - changeSet:
+      id: 3
+      author: bogoslov
+      comment: "add roles"
+      changes:
+        - insert:
+            tableName: roles
+            columns:
+              - column:
+                  name: name
+                  value: "admin"
+        - insert:
+            tableName: roles
+            columns:
+              - column:
+                  name: name
+                  value: "user"
+        - insert:
+            tableName: roles
+            columns:
+              - column:
+                  name: name
+                  value: "courier"
+      rollback:
+        - delete:
+            tableName: roles
+            where: name in ('admin', 'user', 'courier')
+
+  - changeSet:
+      id: 4
+      author: bogoslov
+      comment: "add admin"
+      changes:
+        - insert:
+            tableName: users
+            columns:
+              - column:
+                  name: login
+                  value: "admin"
+              - column:
+                  name: password
+                  value: "admin"
+              - column:
+                  name: first_name
+                  value: "Anton"
+              - column:
+                  name: last_name
+                  value: "Bogoslov"
+              - column:
+                  name: user_role_id
+                  value: 1
+      rollback:
+        - delete:
+            tableName: users
+            where: username in ('admin')

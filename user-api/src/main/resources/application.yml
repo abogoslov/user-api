@@ -1,0 +1,22 @@
+server:
+  port: 8081
+
+spring:
+  datasource:
+    url: jdbc:postgresql://balarama.db.elephantsql.com/zhzcqpvd
+    username: zhzcqpvd
+    password: b1ouGsG0F0IISi0FK23c2GnLdapBjeQK
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: none
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+
+api:
+  jwt:
+    tokenIssuer: user-api
+    tokenSigningKey: Pm8EV6Hy5RKFK4EEACIDAwQusD7g
+    accessTokenExpirationTime: 15 # Minutes
+    refreshTokenExpirationTime: 60 # Minutes
